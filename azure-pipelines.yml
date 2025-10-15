@@ -38,13 +38,7 @@ stages:
         restoreKeys: |
           npm | "$(Agent.OS)"
       displayName: 'Cache NPM packages'
-    - script: |
-        if [ -d "$(Pipeline.Workspace)/.npm" ]; then
-          echo "✅ NPM cache directory exists. Likely cache HIT."
-        else
-          echo "⚠️ NPM cache directory not found. Likely cache MISS."
-        fi
-          displayName: 'Check NPM cache hit/miss'
+   
     - task: Npm@1
       displayName: 'Run npm install'
       inputs:
