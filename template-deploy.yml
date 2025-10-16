@@ -26,7 +26,7 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: ${{ parameters.environmentName }} website'
             inputs:
-              azureSubscription: 'your-subscription'
+              azureSubscription: 'Visual Studio Enterprise Subscription(b2d13dde-c5ef-4a3c-b9d4-da08a1753a12)'
               appType: 'webAppLinux'
               appName: ${{ parameters.appName }}
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
