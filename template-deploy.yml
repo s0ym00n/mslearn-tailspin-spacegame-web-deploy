@@ -9,7 +9,6 @@ parameters:
 stages:
 - stage: ${{ parameters.stageName }}
   displayName: 'Deploy to the ${{ parameters.environmentName }} environment'
-  dependsOn: ${{ parameters.stageName == 'Dev' ? 'Build' : 'Dev' }}
   condition: succeeded()
   jobs:
   - deployment: Deploy
