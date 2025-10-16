@@ -1,0 +1,33 @@
+parameters:
+  - name: stageName
+    type: string
+  - name: environmentName
+    type: string
+  - name: appName
+    type: string
+
+stages:
+- stage: ${{ parameters.stageName }}
+  displayName: 'Deploy to the ${{ parameters.environmentName }} environment'
+  dependsOn: ${{ parameters.stageName == 'Dev' ? 'Build' : 'Dev' }}
+  condition: succeeded()
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-22.04'
+    environment: ${{ parameters.environmentName }}
+    variables:
+    - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureWebApp@1
+            displayName: 'Azure App Service Deploy: ${{ parameters.environmentName }} website'
+            inputs:
+              azureSubscription: 'your-subscription'
+              appType: 'webAppLinux'
+              appName: ${{ parameters.appName }}
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
